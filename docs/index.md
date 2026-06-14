@@ -15,7 +15,9 @@ públicos (ver [Los tres casos](casos.md)). Acá no analizamos un lugar puntual:
 **cono de visión** —lo que cada uno "ve" en el suelo—. **Filtrá por tipo** (óptico, SAR, térmico,
 hiperespectral, GEO) y **tocá un satélite en la leyenda** para iluminar su cono, ver su traza terrestre
 y un panel con qué dato saca. Fijate el contraste: PRISMA mira una franja angosta, Sentinel-3 barre
-ancho, y el geoestacionario GOES ve casi un hemisferio entero de una sola vez.*
+ancho, y el geoestacionario GOES ve casi un hemisferio entero de una sola vez. El **terminador
+día/noche** sobre el planeta muestra qué mitad está iluminada en cada momento —clave para los sensores
+ópticos, que necesitan luz solar—.*
 
 ## ¿Para qué sirve mirar la Tierra desde el espacio?
 

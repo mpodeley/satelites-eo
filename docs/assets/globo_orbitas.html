@@ -199,6 +199,7 @@ function showInfo(s) {
 }
 
 function selectSat(s) {
+  if (selected === s) { clearSelection(); return; }   // toggle: re-tocar deselecciona
   selected = s;
   showGroundTrack(s);
   showInfo(s);
@@ -283,7 +284,9 @@ function buildCone(d) {
 }
 function updateCone(group, d) {
   if (d.alt === undefined) { group.visible = false; return; }
-  const visible = !activeType || d.type === activeType;
+  // GEO: cono enorme y lejano que opaca a los demás → oculto salvo que se filtre GEO o se seleccione.
+  let visible = !activeType || d.type === activeType;
+  if (d.type === "GEO") visible = activeType === "GEO" || selected === d;
   group.visible = visible;
   if (!visible) return;
 
@@ -294,15 +297,68 @@ function updateCone(group, d) {
   const { coneMat, footMat } = group.userData;
   const isSel = selected === d;
   const someSel = !!selected;
-  coneMat.opacity = isSel ? 0.42 : (someSel ? 0.05 : (d.type === "GEO" ? 0.08 : 0.2));
-  footMat.opacity = isSel ? 0.8 : (someSel ? 0.12 : (d.type === "GEO" ? 0.2 : 0.45));
+  if (d.type === "GEO") {                 // siempre un tinte suave: deja ver la Tierra debajo
+    coneMat.opacity = 0.1;
+    footMat.opacity = 0.2;
+  } else {
+    coneMat.opacity = isSel ? 0.42 : (someSel ? 0.05 : 0.2);
+    footMat.opacity = isSel ? 0.8 : (someSel ? 0.12 : 0.45);
+  }
+}
+
+// --- Material día/noche: mezcla textura diurna (blue marble) y nocturna (luces de
+//     ciudad) según el ángulo con el Sol, para que se vea el área iluminada en cada momento. ---
+const dayNightMat = new THREE.ShaderMaterial({
+  uniforms: {
+    dayTexture:   { value: null },
+    nightTexture: { value: null },
+    sunDirection: { value: new THREE.Vector3(1, 0, 0) },
+  },
+  vertexShader: `
+    varying vec3 vNormalW;
+    varying vec2 vUv;
+    void main() {
+      vNormalW = normalize(mat3(modelMatrix) * normal);
+      vUv = uv;
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    }`,
+  fragmentShader: `
+    uniform sampler2D dayTexture;
+    uniform sampler2D nightTexture;
+    uniform vec3 sunDirection;
+    varying vec3 vNormalW;
+    varying vec2 vUv;
+    void main() {
+      float intensity = dot(vNormalW, normalize(sunDirection));
+      vec3 day = texture2D(dayTexture, vUv).rgb;
+      vec3 night = texture2D(nightTexture, vUv).rgb;
+      float m = smoothstep(-0.12, 0.25, intensity);   // ancho del terminador
+      gl_FragColor = vec4(mix(night, day, m), 1.0);
+    }`,
+});
+{
+  const loader = new THREE.TextureLoader();
+  loader.setCrossOrigin("anonymous");
+  loader.load("https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg",
+    t => dayNightMat.uniforms.dayTexture.value = t);
+  loader.load("https://unpkg.com/three-globe/example/img/earth-night.jpg",
+    t => dayNightMat.uniforms.nightTexture.value = t);
+}
+
+function sunDirection(date) {
+  const yStart = Date.UTC(date.getUTCFullYear(), 0, 0);
+  const doy = (Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()) - yStart) / 86400000;
+  const decl = 23.44 * Math.sin(2 * Math.PI / 365.24 * (doy - 80));   // latitud subsolar
+  const utcH = date.getUTCHours() + date.getUTCMinutes() / 60 + date.getUTCSeconds() / 3600;
+  const lng = -15 * (utcH - 12);                                      // longitud subsolar (mediodía)
+  const c = world.getCoords(decl, lng, 0);
+  return new THREE.Vector3(c.x, c.y, c.z).normalize();
 }
 
 // --- Globo ---
 const world = Globe()
   (document.getElementById("globe"))
-  .globeImageUrl("https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg")
-  .bumpImageUrl("https://unpkg.com/three-globe/example/img/earth-topology.png")
+  .globeMaterial(dayNightMat)
   .backgroundImageUrl("https://unpkg.com/three-globe/example/img/night-sky.png")
   // satélites (esferas)
   .objectLat("lat").objectLng("lng").objectAltitude("alt")
@@ -346,6 +402,8 @@ function frame() {
   const now = performance.now();
   simTime = new Date(simTime.getTime() + (now - lastReal) * SPEED);
   lastReal = now;
+
+  dayNightMat.uniforms.sunDirection.value.copy(sunDirection(simTime));
 
   SATS.forEach(s => {
     if (!s.satrec) return;
