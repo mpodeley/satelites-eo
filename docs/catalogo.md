@@ -27,7 +27,7 @@ abiertos, ideales para empezar y para presupuestos chicos) y **comerciales** (se
 | Sentinel-5P | ESA Copernicus | Atmósfera | TROPOMI (gases traza) | 3.5×5.5 km | Diaria | 2600 km | 2017– |
 | Landsat 8 / 9 | NASA / USGS | Óptico + Térmico | OLI + TIRS | 30 m (15 pan / 100 térmico) | 16 d (8 d combinados) | 185 km | 2013 / 2021– |
 | MODIS | NASA (Terra / Aqua) | Óptico + Térmico | 36 bandas | 250 / 500 / 1000 m | Diaria | 2330 km | 1999 / 2002– |
-| VIIRS | NASA / NOAA | Óptico + Térmico + Nocturno | Día-noche | 375 / 750 m | Diaria | 3060 km | 2011– |
+| VIIRS | NASA / NOAA | Óptico + Térmico + Nocturno | Banda día-noche (DNB) / Black Marble | 375 / 750 m | Diaria | 3060 km | 2011– |
 | ASTER | NASA / METI (Terra) | Óptico + Térmico + Estéreo | VNIR / SWIR / TIR | 15 / 30 / 90 m | A demanda (~16 d) | 60 km | 1999– |
 | SRTM | NASA | DEM | Interferometría banda C | 30 m (1 arcsec) | Única (feb-2000) | — | 2000 |
 | Copernicus DEM GLO-30 | ESA (de TanDEM-X) | DEM | SAR banda X | 30 m | Época ~2011–2015 | — | 2019– |
@@ -64,7 +64,7 @@ abiertos, ideales para empezar y para presupuestos chicos) y **comerciales** (se
     Casi todo análisis serio **empieza por lo gratuito** (Sentinel, Landsat, los DEM) para
     explorar y delimitar la zona. Lo comercial se reserva para cuando hace falta **detalle
     sub-métrico** o una **fecha concreta a pedido** que las misiones abiertas no cubren.
-    Los tres [casos reales](casos.md) de esta guía se hicieron **100 % con datos gratuitos**.
+    Los cuatro [casos reales](casos.md) de esta guía se hicieron **100 % con datos gratuitos**.
 
 > Las tablas de arriba se generan desde `docs/data/satelites.csv` con
 > `python docs/pipeline/build_catalogo.py` — editá el CSV, no las tablas a mano.

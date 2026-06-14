@@ -13,6 +13,7 @@ campaña sin gastar de más.
 | Vegetación, cultivos, deforestación (NDVI) | **Óptico multiespectral** | Sentinel-2, Landsat 8/9 |
 | Temperatura de superficie, incendios, estrés hídrico | **Térmico** | Landsat TIRS, Sentinel-3, MODIS |
 | Identificar minerales / materiales | **Hiperespectral** | PRISMA, EMIT |
+| Actividad industrial nocturna / flaring de gas | **Nocturno (día-noche)** | VIIRS día-noche (NASA Black Marble) |
 | Humedad del suelo (regional) | **Radiómetro microondas** | SMAP |
 | Agua subterránea / cambios de masa (regional) | **Gravimetría** | GRACE-FO |
 | Algo que cambia rápido (horas): humo, inundación, tormenta | **GEO / revisita alta** | GOES (geoestacionario), MODIS/VIIRS (diario) |
@@ -57,5 +58,5 @@ La lista completa está en [Referencias y portales](referencias.md).
 
 ## Paso 5 — Mirá cómo se hizo de verdad
 
-Los [tres casos](casos.md) recorren este proceso de punta a punta —objetivo, elección de satélite y
+Los [cuatro casos](casos.md) recorren este proceso de punta a punta —objetivo, elección de satélite y
 banda, descarga, procesamiento y resultado honesto— y todo el código es público y reproducible.

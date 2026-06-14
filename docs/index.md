@@ -4,8 +4,8 @@ Hay **decenas de satélites** mirando la Tierra ahora mismo. Algunos sacan fotos
 "ven" en la oscuridad o a través de las nubes con radar, otros miden la altura del terreno, la
 temperatura, la humedad del suelo o hasta cambios en la gravedad. Muchos son **gratis**.
 
-Esta guía es un **suplemento didáctico** a tres estudios reales hechos solo con datos satelitales
-públicos (ver [Los tres casos](casos.md)). Acá no analizamos un lugar puntual: explicamos
+Esta guía es un **suplemento didáctico** a cuatro estudios reales hechos solo con datos satelitales
+públicos (ver [Los cuatro casos](casos.md)). Acá no analizamos un lugar puntual: explicamos
 **qué herramientas hay, dónde están, qué dato sacan, cada cuánto y a qué costo**, para que puedas
 **planificar tu propia campaña o estudio**.
 
@@ -13,11 +13,12 @@ públicos (ver [Los tres casos](casos.md)). Acá no analizamos un lugar puntual:
 
 *Globo 3D con satélites reales orbitando (posiciones calculadas desde sus datos orbitales TLE) y su
 **cono de visión** —lo que cada uno "ve" en el suelo—. **Filtrá por tipo** (óptico, SAR, térmico,
-hiperespectral, GEO) y **tocá un satélite en la leyenda** para iluminar su cono, ver su traza terrestre
-y un panel con qué dato saca. Fijate el contraste: PRISMA mira una franja angosta, Sentinel-3 barre
-ancho, y el geoestacionario GOES ve casi un hemisferio entero de una sola vez. El **terminador
+hiperespectral, nocturno, GEO) y **tocá un satélite en la leyenda** para iluminar su cono, ver su traza
+terrestre y un panel con qué dato saca. Fijate el contraste: PRISMA mira una franja angosta, Sentinel-3
+barre ancho, y el geoestacionario GOES ve casi un hemisferio entero de una sola vez. El **terminador
 día/noche** sobre el planeta muestra qué mitad está iluminada en cada momento —clave para los sensores
-ópticos, que necesitan luz solar—.*
+ópticos, que necesitan luz solar; en cambio Suomi-NPP/VIIRS justamente **mira el lado oscuro** y capta
+las luces de ciudades y del flaring de gas—.*
 
 ## ¿Para qué sirve mirar la Tierra desde el espacio?
 
@@ -25,6 +26,7 @@ día/noche** sobre el planeta muestra qué mitad está iluminada en cada momento
 - **Medir cuánto material se sacó o se puso** (minería, obra) comparando modelos de elevación.
 - **Seguir la vegetación, el agua, los incendios, la temperatura** con sensores ópticos y térmicos.
 - **Identificar materiales** (minerales, contaminantes) con sensores hiperespectrales.
+- **Detectar actividad industrial y flaring de gas** por la huella lumínica nocturna.
 - Y todo esto **en serie temporal**: lo potente no es una foto, es ver el cambio a lo largo de años.
 
 ## Cómo recorrer esta guía
@@ -39,7 +41,7 @@ día/noche** sobre el planeta muestra qué mitad está iluminada en cada momento
    acceso. Tu lista de compras.
 5. **[Cómo elegir / planificar](planificar.md)** — un árbol de decisión: *tengo esta pregunta,
    ¿qué satélite uso?*
-6. **[Los tres casos](casos.md)** — de la teoría a la práctica, con resultados reales.
+6. **[Los cuatro casos](casos.md)** — de la teoría a la práctica, con resultados reales.
 
 !!! note "Honestidad metodológica"
     Esta guía es introductoria y prioriza la **intuición** sobre la exactitud de cada número.

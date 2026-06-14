@@ -37,7 +37,8 @@ nav:
   - Cómo funciona el InSAR: interferometria.md
   - Catálogo de misiones: catalogo.md
   - Cómo elegir / planificar: planificar.md
-  - Los tres casos reales: casos.md
+  - Los cuatro casos reales: casos.md
+  - Qué se extrae (papers): papers.md
   - Referencias y portales: referencias.md
 
 markdown_extensions:

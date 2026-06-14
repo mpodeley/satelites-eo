@@ -1,6 +1,6 @@
 # Guía de satélites para observar la Tierra
 
-Suplemento didáctico a tres casos reales de teledetección
+Suplemento didáctico a cuatro casos reales de teledetección
 ([vaca-muerta-insar](https://github.com/mpodeley/vaca-muerta-insar),
 [litio-insar](https://github.com/mpodeley/litio-insar),
 [mineria-dem](https://github.com/mpodeley/mineria-dem)).

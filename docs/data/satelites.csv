@@ -5,7 +5,7 @@ Sentinel-3,ESA Copernicus,Gratis,Óptico + Térmico,OLCI / SLSTR,300 m / 500–1
 Sentinel-5P,ESA Copernicus,Gratis,Atmósfera,TROPOMI (gases traza),3.5×5.5 km,Diaria,2600 km,Gratis,Copernicus Data Space,2017–
 Landsat 8 / 9,NASA / USGS,Gratis,Óptico + Térmico,OLI + TIRS,30 m (15 pan / 100 térmico),16 d (8 d combinados),185 km,Gratis,USGS EarthExplorer,2013 / 2021–
 MODIS,NASA (Terra / Aqua),Gratis,Óptico + Térmico,36 bandas,250 / 500 / 1000 m,Diaria,2330 km,Gratis,NASA Earthdata,1999 / 2002–
-VIIRS,NASA / NOAA,Gratis,Óptico + Térmico + Nocturno,Día-noche,375 / 750 m,Diaria,3060 km,Gratis,NASA Earthdata,2011–
+VIIRS,NASA / NOAA,Gratis,Óptico + Térmico + Nocturno,Banda día-noche (DNB) / Black Marble,375 / 750 m,Diaria,3060 km,Gratis,NASA Earthdata,2011–
 ASTER,NASA / METI (Terra),Gratis,Óptico + Térmico + Estéreo,VNIR / SWIR / TIR,15 / 30 / 90 m,A demanda (~16 d),60 km,Gratis,NASA Earthdata,1999–
 SRTM,NASA,Gratis,DEM,Interferometría banda C,30 m (1 arcsec),Única (feb-2000),—,Gratis,EarthExplorer / OpenTopography,2000
 Copernicus DEM GLO-30,ESA (de TanDEM-X),Gratis,DEM,SAR banda X,30 m,Época ~2011–2015,—,Gratis,Copernicus / AWS,2019–

@@ -80,9 +80,10 @@ const TYPES = {
   "SAR":            "#ef476f",
   "Térmico":        "#f4a261",
   "Hiperespectral": "#9b5de5",
+  "Nocturno":       "#ffd166",
   "GEO":            "#4cc9f0",
 };
-const ORDER = ["Óptico", "SAR", "Térmico", "Hiperespectral", "GEO"];
+const ORDER = ["Óptico", "SAR", "Térmico", "Hiperespectral", "Nocturno", "GEO"];
 
 // --- Satélites curados (EO). Snapshot TLE embebido; se refresca en vivo desde Celestrak. ---
 const SATS = [
@@ -122,6 +123,12 @@ const SATS = [
     observa: "Identifica materiales (minerales, contaminantes) por su huella espectral. Franja angosta.",
     tle1: "1 44072U 19015A   26165.24082476  .00001938  00000+0  24120-3 0  9998",
     tle2: "2 44072  97.8650 240.0573 0001506  80.4585 279.6799 14.83646616391611" },
+  { name: "Suomi-NPP", catnr: 37849, type: "Nocturno", footprintKm: 3060,
+    operador: "NASA / NOAA", sensor: "VIIRS · banda día-noche (DNB)", resolucion: "375–750 m",
+    revisita: "Diaria", swath: "3060 km",
+    observa: "Luces nocturnas: ciudades, flaring de gas y actividad iluminada de noche (Black Marble).",
+    tle1: "1 37849U 11061A   26165.30964211  .00000048  00000+0  43967-4 0  9990",
+    tle2: "2 37849  98.7954 106.2053 0001696  13.8068 346.3154 14.19516812758037" },
   { name: "GOES-18", catnr: 51850, type: "GEO", footprintKm: 5500,
     operador: "NOAA", sensor: "ABI óptico + térmico (geoestacionario)", resolucion: "0.5–2 km",
     revisita: "5–15 min", swath: "Disco completo",
