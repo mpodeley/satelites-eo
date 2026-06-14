@@ -82,12 +82,12 @@ Muerta, y se puede **atribuir a cada operador** con datos públicos, sin informa
   multi-año) y se rastrean **plumas puntuales** en el catálogo de EMIT.
 - **Resultado:** 2024 → **113 antorchas, ~2,4 Mt CO₂**; la intensidad **no se reparte pareja**: los
   gasíferos queman ~1 % de su gas (~2–3 kg CO₂/BOE), los petroleros queman el gas asociado (Vista 16 %,
-  Chevron 33 % → ~32 kg CO₂/BOE). El metano queda como **contexto de cuenca** (TROPOMI) + **una única
-  pluma EMIT** catalogada sobre el área (→ concesión de YPF).
+  Chevron 33 % → ~32 kg CO₂/BOE). El metano queda como **contexto de cuenca** (TROPOMI); EMIT observó la
+  zona **132 veces** y catalogó **una sola pluma** (→ concesión de YPF) → pocas fuentes puntuales grandes.
 - **Lección:** el satélite atribuye bien lo que es **puntual y fijo** (una antorcha → un operador), pero
-  **no** lo que es **difuso o esporádico** (el metano a 7 km, o plumas que solo se ven cuando la ISS
-  pasa). El caso elige conscientemente el **numerador atribuible** (flaring) y se niega a repartir el
-  metano por empresa: eso sería **falsa precisión**.
+  **no** lo que es **difuso** (el metano a 7 km de TROPOMI, o fuentes por debajo del umbral de EMIT pese
+  a su buena cobertura). El caso elige conscientemente el **numerador atribuible** (flaring) y se niega a
+  repartir el metano por empresa: eso sería **falsa precisión**.
 
 🔗 **[vaca-muerta-emisiones →](https://mpodeley.github.io/vaca-muerta-emisiones/)**
 
