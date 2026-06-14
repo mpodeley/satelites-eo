@@ -3,80 +3,219 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Globo 3D de órbitas</title>
+<title>Globo 3D de órbitas y conos de visión</title>
 <style>
+  :root { --bg: rgba(10,12,20,.78); }
   html, body { margin: 0; height: 100%; background: #000010; overflow: hidden;
-    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; color: #e8e8e8; }
   #globe { width: 100%; height: 100%; }
+
   #legend { position: absolute; top: 10px; left: 10px; z-index: 10;
-    background: rgba(10,12,20,.72); color: #e8e8e8; padding: 10px 12px;
-    border-radius: 8px; font-size: 12px; line-height: 1.6; max-width: 230px; }
+    background: var(--bg); padding: 10px 12px; border-radius: 8px;
+    font-size: 12px; line-height: 1.5; max-width: 250px; }
   #legend b { font-size: 12.5px; }
-  .row { display: flex; align-items: center; gap: 7px; }
+  #chips { display: flex; flex-wrap: wrap; gap: 5px; margin: 7px 0 9px; }
+  .chip { cursor: pointer; border: 1px solid #3a4150; border-radius: 12px;
+    padding: 2px 9px; font-size: 11px; color: #cdd3dc; user-select: none;
+    background: rgba(255,255,255,.03); transition: all .15s; }
+  .chip:hover { border-color: #6b7689; }
+  .chip.active { background: #e8e8e8; color: #11151c; border-color: #e8e8e8; font-weight: 600; }
+  .sat-row { display: flex; align-items: center; gap: 7px; cursor: pointer;
+    padding: 2px 4px; border-radius: 5px; transition: background .15s, opacity .15s; }
+  .sat-row:hover { background: rgba(255,255,255,.07); }
+  .sat-row.sel { background: rgba(255,255,255,.13); }
+  .sat-row.dim { opacity: .28; }
   .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; flex: none; }
-  #note { position: absolute; bottom: 8px; left: 10px; right: 10px; z-index: 10;
-    color: #9aa3b2; font-size: 10.5px; text-align: center; }
+  .hint { color: #9aa3b2; font-size: 10.5px; display: block; margin-top: 8px; }
+
+  #info { position: absolute; right: 10px; bottom: 30px; z-index: 11; width: 248px;
+    background: var(--bg); border-radius: 8px; padding: 12px 13px; font-size: 12px;
+    line-height: 1.45; display: none; }
+  #info h3 { margin: 0 0 2px; font-size: 14px; display: flex; align-items: center; gap: 7px; }
+  #info .tipo { font-size: 10.5px; color: #11151c; padding: 1px 7px; border-radius: 10px; font-weight: 600; }
+  #info .observa { color: #d7dde6; margin: 6px 0 8px; font-style: italic; }
+  #info table { width: 100%; border-collapse: collapse; }
+  #info td { padding: 1px 0; vertical-align: top; }
+  #info td.k { color: #9aa3b2; padding-right: 8px; white-space: nowrap; }
+  #info a { color: #7ec8ff; text-decoration: none; font-size: 11.5px; }
+  #info a:hover { text-decoration: underline; }
+  #info .close { position: absolute; top: 8px; right: 11px; cursor: pointer; color: #9aa3b2; font-size: 15px; }
+
   #status { position: absolute; top: 10px; right: 10px; z-index: 10;
     color: #9aa3b2; font-size: 10.5px; background: rgba(10,12,20,.6);
     padding: 3px 8px; border-radius: 6px; }
+  #note { position: absolute; bottom: 8px; left: 10px; right: 10px; z-index: 10;
+    color: #9aa3b2; font-size: 10.5px; text-align: center; }
 </style>
 </head>
 <body>
 <div id="globe"></div>
+
 <div id="legend">
-  <b>Satélites reales en órbita</b><br/>
-  <div id="legend-items"></div>
-  <span style="color:#9aa3b2;font-size:10.5px">Arrastrá para girar · rueda para zoom · clic en un satélite = su traza terrestre</span>
+  <b>Satélites de observación</b>
+  <div id="chips"></div>
+  <div id="sat-list"></div>
+  <span class="hint">Filtrá por tipo arriba · tocá un satélite para ver su cono, su traza y qué observa.</span>
 </div>
+
+<div id="info">
+  <span class="close" id="info-close">×</span>
+  <div id="info-body"></div>
+</div>
+
 <div id="status">cargando…</div>
-<div id="note">Posiciones ilustrativas calculadas con SGP4 a partir de datos orbitales (TLE).
-Las órbitas reales varían a diario.</div>
+<div id="note">Posiciones (SGP4 sobre TLE) y conos de visión son <b>ilustrativos</b>: el cono es una
+simplificación del campo de visión, no la geometría exacta de adquisición. Los TLE varían a diario.</div>
 
 <script src="https://cdn.jsdelivr.net/npm/satellite.js@5.0.0/dist/satellite.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/globe.gl@2.32.0/dist/globe.gl.min.js"></script>
 <script>
 const EARTH_R_KM = 6371;
+const GLOBE_R = 100;            // radio de la Tierra en unidades de escena de globe.gl
 
-// --- Satélites curados. Snapshot TLE embebido como respaldo; se intenta
-//     refrescar en vivo desde Celestrak por número de catálogo (CATNR). ---
+// Color por TIPO (no por satélite) para que el filtro por tipo sea intuitivo.
+const TYPES = {
+  "Óptico":         "#06d6a0",
+  "SAR":            "#ef476f",
+  "Térmico":        "#f4a261",
+  "Hiperespectral": "#9b5de5",
+  "GEO":            "#4cc9f0",
+};
+const ORDER = ["Óptico", "SAR", "Térmico", "Hiperespectral", "GEO"];
+
+// --- Satélites curados (EO). Snapshot TLE embebido; se refresca en vivo desde Celestrak. ---
 const SATS = [
-  { name: "ISS",         catnr: 25544, group: "LEO",
-    color: "#ffd166",
-    tle1: "1 25544U 98067A   26165.09325830  .00008623  00000+0  16324-3 0  9997",
-    tle2: "2 25544  51.6335 315.4063 0004936 183.6835 176.4118 15.49219019571274" },
-  { name: "Sentinel-1A", catnr: 39634, group: "SSO",
-    color: "#ef476f",
-    tle1: "1 39634U 14016A   26165.21321079 -.00000479  00000+0 -91822-4 0  9999",
-    tle2: "2 39634  98.1775 172.7892 0001415  82.5971 277.5389 14.59198047649584" },
-  { name: "Sentinel-2A", catnr: 40697, group: "SSO",
-    color: "#06d6a0",
-    tle1: "1 40697U 15028A   26165.20769247 -.00000152  00000+0 -41298-4 0  9996",
-    tle2: "2 40697  98.5689 240.1014 0001096  91.2008 268.9300 14.30813743573301" },
-  { name: "Landsat 9",   catnr: 49260, group: "SSO",
-    color: "#118ab2",
-    tle1: "1 49260U 21088A   26165.17503140  .00000288  00000+0  74138-4 0  9995",
-    tle2: "2 49260  98.2281 235.3889 0001428  85.5211 274.6150 14.57095086250566" },
-  { name: "SAOCOM 1A",   catnr: 43641, group: "SSO",
-    color: "#9b5de5",
-    tle1: "1 43641U 18076A   26165.16555760  .00000627  00000+0  85294-4 0  9991",
-    tle2: "2 43641  97.8880 351.9586 0001613  77.9750 282.1644 14.82147898415653" },
-  { name: "GOES-18 (GEO)", catnr: 51850, group: "GEO",
-    color: "#f4a261",
+  { name: "Sentinel-1A", catnr: 39634, type: "SAR", footprintKm: 250,
+    operador: "ESA Copernicus", sensor: "Radar SAR · banda C", resolucion: "5×20 m",
+    revisita: "6–12 d", swath: "250 km",
+    observa: "Deformación del suelo, hielo e inundaciones, de día/noche y con nubes.",
+    tle1: "1 39634U 14016A   26165.28178212 -.00000368  00000+0 -68435-4 0  9996",
+    tle2: "2 39634  98.1775 172.8568 0001421  81.7344 278.4017 14.59198370649595" },
+  { name: "SAOCOM 1A", catnr: 43641, type: "SAR", footprintKm: 200,
+    operador: "CONAE (Argentina)", sensor: "Radar SAR · banda L", resolucion: "~10 m",
+    revisita: "8–16 d", swath: "30–350 km",
+    observa: "Humedad de suelo y deformación bajo vegetación: la banda L penetra donde la C falla.",
+    tle1: "1 43641U 18076A   26165.30057948  .00000507  00000+0  70242-4 0  9996",
+    tle2: "2 43641  97.8880 352.0915 0001616  78.8315 281.3080 14.82147640415673" },
+  { name: "Sentinel-2A", catnr: 40697, type: "Óptico", footprintKm: 290,
+    operador: "ESA Copernicus", sensor: "Óptico multiespectral · 13 bandas", resolucion: "10–60 m",
+    revisita: "5 d", swath: "290 km",
+    observa: "Vegetación, cultivos y agua (índices como NDVI). Necesita luz y cielo despejado.",
+    tle1: "1 40697U 15028A   26165.27762267 -.00000097  00000+0 -20534-4 0  9996",
+    tle2: "2 40697  98.5689 240.1703 0001100  91.6724 268.4585 14.30813890573315" },
+  { name: "Landsat 9", catnr: 49260, type: "Óptico", footprintKm: 185,
+    operador: "NASA / USGS", sensor: "Óptico (OLI) + térmico (TIRS)", resolucion: "15–100 m",
+    revisita: "16 d", swath: "185 km",
+    observa: "Uso del suelo y temperatura de superficie; serie histórica desde los años 70.",
+    tle1: "1 49260U 21088A   26165.17503141  .00000288  00000+0  74138-4 0  9996",
+    tle2: "2 49260  98.2281 235.3889 0001427  85.5211 274.6150 14.57095086250565" },
+  { name: "Sentinel-3A", catnr: 41335, type: "Térmico", footprintKm: 1270,
+    operador: "ESA Copernicus", sensor: "OLCI + SLSTR (térmico)", resolucion: "300–1000 m",
+    revisita: "1–2 d", swath: "1270 km",
+    observa: "Temperatura y color del océano/tierra. Barrido muy ancho: cobertura casi diaria.",
+    tle1: "1 41335U 16011A   26165.27110483  .00000102  00000+0  59984-4 0  9992",
+    tle2: "2 41335  98.6249 232.6965 0001387 102.6045 257.5291 14.26739240537640" },
+  { name: "PRISMA", catnr: 44072, type: "Hiperespectral", footprintKm: 30,
+    operador: "ASI (Italia)", sensor: "Hiperespectral · 239 bandas", resolucion: "30 m",
+    revisita: "A demanda", swath: "30 km",
+    observa: "Identifica materiales (minerales, contaminantes) por su huella espectral. Franja angosta.",
+    tle1: "1 44072U 19015A   26165.24082476  .00001938  00000+0  24120-3 0  9998",
+    tle2: "2 44072  97.8650 240.0573 0001506  80.4585 279.6799 14.83646616391611" },
+  { name: "GOES-18", catnr: 51850, type: "GEO", footprintKm: 5500,
+    operador: "NOAA", sensor: "ABI óptico + térmico (geoestacionario)", resolucion: "0.5–2 km",
+    revisita: "5–15 min", swath: "Disco completo",
+    observa: "Atmósfera, tormentas e incendios en tiempo casi real: ve siempre el mismo hemisferio.",
     tle1: "1 51850U 22021A   26165.15600350  .00000105  00000+0  00000+0 0  9990",
     tle2: "2 51850   0.0208 162.0083 0000466   5.3663  14.2477  1.00272156  6566" },
 ];
+SATS.forEach(s => s.color = TYPES[s.type]);
 
-// --- Leyenda ---
-const legend = document.getElementById("legend-items");
-SATS.forEach(s => {
-  const r = document.createElement("div");
-  r.className = "row";
-  r.innerHTML = `<span class="dot" style="background:${s.color}"></span>${s.name} <span style="color:#9aa3b2">· ${s.group}</span>`;
-  legend.appendChild(r);
-});
+// --- Estado de interacción ---
+let activeType = null;   // null = todos
+let selected = null;     // satélite seleccionado
 
-// --- Intentar refrescar TLE en vivo (Celestrak soporta CORS). Si falla, snapshot. ---
+// --- Leyenda: chips de tipo + filas por satélite ---
+const chipsEl = document.getElementById("chips");
+const listEl = document.getElementById("sat-list");
+
+function buildLegend() {
+  chipsEl.innerHTML = "";
+  const all = mkChip("Todos", null);
+  chipsEl.appendChild(all);
+  ORDER.forEach(t => { if (SATS.some(s => s.type === t)) chipsEl.appendChild(mkChip(t, t)); });
+
+  listEl.innerHTML = "";
+  SATS.forEach(s => {
+    const r = document.createElement("div");
+    r.className = "sat-row"; r.dataset.name = s.name;
+    r.innerHTML = `<span class="dot" style="background:${s.color}"></span>` +
+      `<span>${s.name}</span><span style="color:#9aa3b2;font-size:10.5px">· ${s.type}</span>`;
+    r.onclick = () => selectSat(s);
+    listEl.appendChild(r);
+  });
+  refreshLegendStyles();
+}
+function mkChip(label, type) {
+  const c = document.createElement("span");
+  c.className = "chip"; c.textContent = label;
+  if (type) c.style.color = TYPES[type];
+  c.onclick = () => { activeType = type; if (selected && activeType && selected.type !== activeType) clearSelection(); refreshLegendStyles(); };
+  c.dataset.type = type || "all";
+  return c;
+}
+function refreshLegendStyles() {
+  [...chipsEl.children].forEach(c => {
+    const t = c.dataset.type === "all" ? null : c.dataset.type;
+    c.classList.toggle("active", t === activeType);
+  });
+  [...listEl.children].forEach(r => {
+    const s = SATS.find(x => x.name === r.dataset.name);
+    r.classList.toggle("dim", activeType && s.type !== activeType);
+    r.classList.toggle("sel", selected === s);
+  });
+}
+
+// --- Panel de contexto ---
+const infoEl = document.getElementById("info");
+const infoBody = document.getElementById("info-body");
+document.getElementById("info-close").onclick = clearSelection;
+
+function showInfo(s) {
+  infoBody.innerHTML =
+    `<h3><span class="dot" style="background:${s.color}"></span>${s.name}` +
+    `<span class="tipo" style="background:${s.color}">${s.type}</span></h3>` +
+    `<div class="observa">${s.observa}</div>` +
+    `<table>` +
+    `<tr><td class="k">Operador</td><td>${s.operador}</td></tr>` +
+    `<tr><td class="k">Sensor</td><td>${s.sensor}</td></tr>` +
+    `<tr><td class="k">Resolución</td><td>${s.resolucion}</td></tr>` +
+    `<tr><td class="k">Revisita</td><td>${s.revisita}</td></tr>` +
+    `<tr><td class="k">Swath</td><td>${s.swath}</td></tr>` +
+    `<tr><td class="k">Altitud</td><td id="info-alt">—</td></tr>` +
+    `</table>` +
+    `<div style="margin-top:9px"><a href="../catalogo/" target="_top">Ver en el catálogo →</a></div>`;
+  infoEl.style.display = "block";
+}
+
+function selectSat(s) {
+  selected = s;
+  showGroundTrack(s);
+  showInfo(s);
+  refreshLegendStyles();
+  // traer el satélite al frente para que se vea su cono (GEO más lejos)
+  if (s.lat !== undefined) {
+    world.pointOfView({ lat: s.lat, lng: s.lng, altitude: s.type === "GEO" ? 3.0 : 1.9 }, 900);
+  }
+}
+function clearSelection() {
+  selected = null;
+  world.pathsData([]);
+  infoEl.style.display = "none";
+  refreshLegendStyles();
+}
+
+// --- Refrescar TLE en vivo (Celestrak soporta CORS). Si falla, snapshot embebido. ---
 async function refreshTLE() {
   const status = document.getElementById("status");
   let ok = 0;
@@ -84,21 +223,79 @@ async function refreshTLE() {
     try {
       const ctrl = new AbortController();
       const t = setTimeout(() => ctrl.abort(), 8000);
-      const url = `https://celestrak.org/NORAD/elements/gp.php?CATNR=${s.catnr}&FORMAT=tle`;
-      const resp = await fetch(url, { signal: ctrl.signal });
+      const resp = await fetch(`https://celestrak.org/NORAD/elements/gp.php?CATNR=${s.catnr}&FORMAT=tle`, { signal: ctrl.signal });
       clearTimeout(t);
-      const txt = (await resp.text()).trim();
-      const lines = txt.split(/\r?\n/).map(l => l.trim());
-      const l1 = lines.find(l => l.startsWith("1 "));
-      const l2 = lines.find(l => l.startsWith("2 "));
+      const lines = (await resp.text()).trim().split(/\r?\n/).map(l => l.trim());
+      const l1 = lines.find(l => l.startsWith("1 ")), l2 = lines.find(l => l.startsWith("2 "));
       if (l1 && l2) { s.tle1 = l1; s.tle2 = l2; ok++; }
-    } catch (e) { /* fallback al snapshot embebido */ }
+    } catch (e) { /* fallback */ }
   }));
   status.textContent = ok === SATS.length ? "TLE en vivo (Celestrak)"
     : ok > 0 ? `TLE en vivo: ${ok}/${SATS.length} · resto snapshot`
     : "TLE: snapshot embebido (sin red)";
-  setTimeout(() => { status.style.opacity = .0; }, 6000);
   status.style.transition = "opacity 1.5s";
+  setTimeout(() => { status.style.opacity = 0; }, 6000);
+}
+
+// --- Propagación SGP4 ---
+function geodeticAt(satrec, date) {
+  const pv = satellite.propagate(satrec, date);
+  if (!pv.position) return null;
+  const gd = satellite.eciToGeodetic(pv.position, satellite.gstime(date));
+  return { lat: satellite.degreesLat(gd.latitude), lng: satellite.degreesLong(gd.longitude), altKm: gd.height };
+}
+function initSatrecs() {
+  const now = new Date();
+  SATS.forEach(s => {
+    try {
+      s.satrec = satellite.twoline2satrec(s.tle1, s.tle2);
+      const g = geodeticAt(s.satrec, now);
+      s.nomAltKm = g ? g.altKm : 700;
+    } catch (e) { s.satrec = null; }
+  });
+}
+
+// --- Conos de visión: construcción de la geometría (ápice en el satélite) ---
+const UP_NEG = new THREE.Vector3(0, -1, 0);
+function buildCone(d) {
+  const h = GLOBE_R * (d.nomAltKm / EARTH_R_KM);       // alto en unidades de escena
+  // radio de la huella: a escala, pero con un mínimo visible (PRISMA es un hilo) y un cap (GEO).
+  const r = Math.min(Math.max(GLOBE_R * (d.footprintKm / EARTH_R_KM), 1.6), 92);
+  const group = new THREE.Group();
+
+  const coneGeom = new THREE.ConeGeometry(r, h, 28, 1, true);
+  coneGeom.translate(0, -h / 2, 0);                    // ápice en el origen, base en (0,-h,0)
+  const coneMat = new THREE.MeshBasicMaterial({
+    color: d.color, transparent: true, opacity: 0.22,
+    side: THREE.DoubleSide, depthWrite: false });     // normal blending: se ve también sobre la Tierra
+  group.add(new THREE.Mesh(coneGeom, coneMat));
+
+  const footGeom = new THREE.CircleGeometry(r, 40);
+  footGeom.rotateX(-Math.PI / 2);                      // que quede en el plano de la base
+  footGeom.translate(0, -(h - 0.6), 0);               // flotando apenas sobre la superficie (sin z-fighting)
+  const footMat = new THREE.MeshBasicMaterial({
+    color: d.color, transparent: true, opacity: 0.45,
+    side: THREE.DoubleSide, depthWrite: false });
+  group.add(new THREE.Mesh(footGeom, footMat));
+
+  group.userData = { coneMat, footMat, d };
+  return group;
+}
+function updateCone(group, d) {
+  if (d.alt === undefined) { group.visible = false; return; }
+  const visible = !activeType || d.type === activeType;
+  group.visible = visible;
+  if (!visible) return;
+
+  const p = world.getCoords(d.lat, d.lng, d.alt);
+  group.position.set(p.x, p.y, p.z);
+  group.quaternion.setFromUnitVectors(UP_NEG, new THREE.Vector3(p.x, p.y, p.z).normalize().negate());
+
+  const { coneMat, footMat } = group.userData;
+  const isSel = selected === d;
+  const someSel = !!selected;
+  coneMat.opacity = isSel ? 0.42 : (someSel ? 0.05 : (d.type === "GEO" ? 0.08 : 0.2));
+  footMat.opacity = isSel ? 0.8 : (someSel ? 0.12 : (d.type === "GEO" ? 0.2 : 0.45));
 }
 
 // --- Globo ---
@@ -107,51 +304,34 @@ const world = Globe()
   .globeImageUrl("https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg")
   .bumpImageUrl("https://unpkg.com/three-globe/example/img/earth-topology.png")
   .backgroundImageUrl("https://unpkg.com/three-globe/example/img/night-sky.png")
+  // satélites (esferas)
   .objectLat("lat").objectLng("lng").objectAltitude("alt")
-  .objectLabel(d => `${d.name} — ${d.group}\n${Math.round(d.altKm)} km`)
+  .objectLabel(d => `${d.name} — ${d.type}\n${d.observa}\n~${Math.round(d.altKm)} km`)
   .objectThreeObject(d => {
-    const geom = new THREE.SphereGeometry(d.group === "GEO" ? 1.6 : 1.1, 12, 12);
-    const mat = new THREE.MeshLambertMaterial({ color: d.color, emissive: d.color, emissiveIntensity: .6 });
-    return new THREE.Mesh(geom, mat);
+    const mesh = new THREE.Mesh(
+      new THREE.SphereGeometry(d.type === "GEO" ? 1.7 : 1.2, 14, 14),
+      new THREE.MeshLambertMaterial({ color: d.color, emissive: d.color, emissiveIntensity: 0.7 }));
+    return mesh;
   })
-  .onObjectClick(d => showGroundTrack(d))
-  .pathColor(() => ["rgba(255,255,255,0.1)", "rgba(255,255,255,0.85)"])
-  .pathPointAlt(0.002)
-  .pathStroke(1.5)
-  .pathTransitionDuration(0);
+  .onObjectClick(d => selectSat(d))
+  // conos de visión (capa custom: control total de posición y orientación)
+  .customLayerData(SATS)
+  .customThreeObject(d => buildCone(d))
+  .customThreeObjectUpdate((obj, d) => updateCone(obj, d))
+  // traza terrestre del seleccionado
+  .pathColor(() => ["rgba(255,255,255,0.15)", "rgba(255,255,255,1)"])
+  .pathPointAlt(0.012).pathStroke(2.2).pathTransitionDuration(0);
 
 world.controls().autoRotate = false;
-world.pointOfView({ altitude: 3.2 });
+world.pointOfView({ altitude: 3.0 });
 
-// --- Propagación SGP4 ---
-function initSatrecs() {
-  SATS.forEach(s => {
-    try { s.satrec = satellite.twoline2satrec(s.tle1, s.tle2); }
-    catch (e) { s.satrec = null; }
-  });
-}
-
-function geodeticAt(satrec, date) {
-  const pv = satellite.propagate(satrec, date);
-  if (!pv.position) return null;
-  const gmst = satellite.gstime(date);
-  const gd = satellite.eciToGeodetic(pv.position, gmst);
-  return {
-    lat: satellite.degreesLat(gd.latitude),
-    lng: satellite.degreesLong(gd.longitude),
-    altKm: gd.height,
-  };
-}
-
-// --- Traza terrestre al hacer clic (una órbita aprox.) ---
+// --- Traza terrestre (una órbita aprox.) ---
 function showGroundTrack(d) {
   if (!d.satrec) return;
-  const periodMin = (2 * Math.PI) / d.satrec.no; // no = mean motion (rad/min)
-  const steps = 120;
-  const pts = [];
+  const periodMin = (2 * Math.PI) / d.satrec.no;
+  const steps = 140, pts = [];
   for (let i = 0; i <= steps; i++) {
-    const t = new Date(simTime.getTime() + (i / steps) * periodMin * 60 * 1000);
-    const g = geodeticAt(d.satrec, t);
+    const g = geodeticAt(d.satrec, new Date(simTime.getTime() + (i / steps) * periodMin * 60000));
     if (g) pts.push([g.lat, g.lng]);
   }
   world.pathsData([pts]);
@@ -171,21 +351,26 @@ function frame() {
     if (!s.satrec) return;
     const g = geodeticAt(s.satrec, simTime);
     if (!g) return;
-    s.lat = g.lat; s.lng = g.lng; s.altKm = g.altKm;
-    s.alt = g.altKm / EARTH_R_KM;
+    s.lat = g.lat; s.lng = g.lng; s.altKm = g.altKm; s.alt = g.altKm / EARTH_R_KM;
   });
-  world.objectsData(SATS.filter(s => s.satrec && s.lat !== undefined));
+  const ready = SATS.filter(s => s.satrec && s.lat !== undefined && (!activeType || s.type === activeType));
+  world.objectsData(ready);
+  world.customLayerData(SATS.filter(s => s.satrec && s.lat !== undefined));
+
+  if (selected) {
+    const alt = document.getElementById("info-alt");
+    if (alt) alt.textContent = `${Math.round(selected.altKm)} km`;
+  }
   requestAnimationFrame(frame);
 }
 
 // --- Arranque ---
-initSatrecs();           // dibuja ya con el snapshot
+buildLegend();
+initSatrecs();
 requestAnimationFrame(frame);
-refreshTLE().then(initSatrecs); // refresca a TLE en vivo si hay red
+refreshTLE().then(() => { initSatrecs(); });
 
-addEventListener("resize", () => {
-  world.width(window.innerWidth).height(window.innerHeight);
-});
+addEventListener("resize", () => world.width(window.innerWidth).height(window.innerHeight));
 </script>
 </body>
 </html>

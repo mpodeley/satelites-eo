@@ -9,11 +9,13 @@ públicos (ver [Los tres casos](casos.md)). Acá no analizamos un lugar puntual:
 **qué herramientas hay, dónde están, qué dato sacan, cada cuánto y a qué costo**, para que puedas
 **planificar tu propia campaña o estudio**.
 
-<iframe src="assets/globo_orbitas.html" width="100%" height="520" style="border:1px solid #ccc;border-radius:6px"></iframe>
+<iframe src="assets/globo_orbitas.html" width="100%" height="560" style="border:1px solid #ccc;border-radius:6px"></iframe>
 
-*Globo 3D con satélites reales orbitando (posiciones calculadas desde sus datos orbitales TLE).
-Arrastrá para girar; pasá el mouse por un satélite para ver cuál es. Fijate cómo los de órbita baja
-(LEO) corren rápido y bajo, mientras un geoestacionario (GEO) queda "clavado" sobre un punto.*
+*Globo 3D con satélites reales orbitando (posiciones calculadas desde sus datos orbitales TLE) y su
+**cono de visión** —lo que cada uno "ve" en el suelo—. **Filtrá por tipo** (óptico, SAR, térmico,
+hiperespectral, GEO) y **tocá un satélite en la leyenda** para iluminar su cono, ver su traza terrestre
+y un panel con qué dato saca. Fijate el contraste: PRISMA mira una franja angosta, Sentinel-3 barre
+ancho, y el geoestacionario GOES ve casi un hemisferio entero de una sola vez.*
 
 ## ¿Para qué sirve mirar la Tierra desde el espacio?
 
