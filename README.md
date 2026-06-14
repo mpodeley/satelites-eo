@@ -30,6 +30,9 @@ python docs/pipeline/build_catalogo.py
 
 # Planisferio de cobertura (requiere skyfield + plotly)
 python docs/pipeline/cobertura_planisferio.py
+
+# Figura didáctica de interferograma InSAR (requiere matplotlib)
+python docs/pipeline/interferograma_demo.py
 ```
 
 El globo 3D (`docs/assets/globo_orbitas.html`) es HTML autocontenido: toma los TLE en vivo

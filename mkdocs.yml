@@ -34,6 +34,7 @@ nav:
   - Inicio: index.md
   - Cómo orbita un satélite: orbitas.md
   - Sensores y tipos de dato: sensores.md
+  - Cómo funciona el InSAR: interferometria.md
   - Catálogo de misiones: catalogo.md
   - Cómo elegir / planificar: planificar.md
   - Los tres casos reales: casos.md

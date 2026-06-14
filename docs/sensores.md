@@ -20,7 +20,8 @@ espectro.
 El **SAR** (radar de apertura sintética) emite microondas y mide el eco. Como pone su propia
 "linterna", **funciona de noche y atraviesa las nubes** — enorme ventaja en zonas nubladas o para
 monitoreo garantizado. Mide rugosidad, humedad, estructura... y, con **interferometría (InSAR)**,
-**movimientos del suelo de milímetros**.
+**movimientos del suelo de milímetros** — cómo funciona eso tiene su propia página:
+**[Cómo funciona el InSAR](interferometria.md)**.
 
 La **banda** (longitud de onda) define cuánto penetra y qué tan estable es la señal:
 

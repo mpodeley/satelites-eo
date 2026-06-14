@@ -33,11 +33,13 @@ día/noche** sobre el planeta muestra qué mitad está iluminada en cada momento
    ver. Órbita baja vs geoestacionaria, revisita, swath, hora de paso. Con un planisferio animado.
 2. **[Sensores y tipos de dato](sensores.md)** — óptico, radar (SAR), térmico, hiperespectral,
    modelos de elevación... qué mide cada uno y cuándo conviene.
-3. **[Catálogo de misiones](catalogo.md)** — la tabla grande: gratis vs pago, resolución, revisita,
+3. **[Cómo funciona el InSAR](interferometria.md)** — la técnica que mide milímetros de deformación
+   del suelo desde el espacio: cómo funciona, qué se puede y qué no.
+4. **[Catálogo de misiones](catalogo.md)** — la tabla grande: gratis vs pago, resolución, revisita,
    acceso. Tu lista de compras.
-4. **[Cómo elegir / planificar](planificar.md)** — un árbol de decisión: *tengo esta pregunta,
+5. **[Cómo elegir / planificar](planificar.md)** — un árbol de decisión: *tengo esta pregunta,
    ¿qué satélite uso?*
-5. **[Los tres casos](casos.md)** — de la teoría a la práctica, con resultados reales.
+6. **[Los tres casos](casos.md)** — de la teoría a la práctica, con resultados reales.
 
 !!! note "Honestidad metodológica"
     Esta guía es introductoria y prioriza la **intuición** sobre la exactitud de cada número.
