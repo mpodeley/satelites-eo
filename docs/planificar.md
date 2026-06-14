@@ -58,5 +58,5 @@ La lista completa está en [Referencias y portales](referencias.md).
 
 ## Paso 5 — Mirá cómo se hizo de verdad
 
-Los [cuatro casos](casos.md) recorren este proceso de punta a punta —objetivo, elección de satélite y
+Los [cinco casos](casos.md) recorren este proceso de punta a punta —objetivo, elección de satélite y
 banda, descarga, procesamiento y resultado honesto— y todo el código es público y reproducible.
