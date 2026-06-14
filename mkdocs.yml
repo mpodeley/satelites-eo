@@ -1,0 +1,53 @@
+site_name: Guía de satélites para observar la Tierra
+site_description: >-
+  Guía didáctica: qué herramientas satelitales hay para analizar la Tierra, dónde
+  orbitan, si son gratis o pagas, qué tipo de dato sacan y con qué frecuencia. Con
+  animaciones de órbitas y cobertura para planificar campañas y estudios.
+site_url: https://mpodeley.github.io/satelites-eo/
+repo_url: https://github.com/mpodeley/satelites-eo
+repo_name: mpodeley/satelites-eo
+
+theme:
+  name: material
+  custom_dir: overrides
+  language: es
+  palette:
+    - scheme: default
+      primary: blue grey
+      accent: red
+      toggle:
+        icon: material/weather-night
+        name: Modo oscuro
+    - scheme: slate
+      primary: blue grey
+      accent: red
+      toggle:
+        icon: material/weather-sunny
+        name: Modo claro
+  features:
+    - navigation.sections
+    - navigation.top
+    - content.code.copy
+    - toc.follow
+
+nav:
+  - Inicio: index.md
+  - Cómo orbita un satélite: orbitas.md
+  - Sensores y tipos de dato: sensores.md
+  - Catálogo de misiones: catalogo.md
+  - Cómo elegir / planificar: planificar.md
+  - Los tres casos reales: casos.md
+  - Referencias y portales: referencias.md
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - tables
+  - attr_list
+  - md_in_html
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/mpodeley/satelites-eo

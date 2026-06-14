@@ -1,0 +1,28 @@
+mision,operador,grupo,tipo,banda_sensor,resolucion,revisita,swath,costo,portal,periodo
+Sentinel-1,ESA Copernicus,Gratis,SAR,Banda C (5.4 GHz),5×20 m (IW),6–12 d,250 km,Gratis,Copernicus Data Space / ASF,2014–
+Sentinel-2,ESA Copernicus,Gratis,Óptico,Multiespectral 13 bandas,10 / 20 / 60 m,5 d,290 km,Gratis,Copernicus Data Space,2015–
+Sentinel-3,ESA Copernicus,Gratis,Óptico + Térmico,OLCI / SLSTR,300 m / 500–1000 m,1–2 d,1270 km,Gratis,Copernicus Data Space,2016–
+Sentinel-5P,ESA Copernicus,Gratis,Atmósfera,TROPOMI (gases traza),3.5×5.5 km,Diaria,2600 km,Gratis,Copernicus Data Space,2017–
+Landsat 8 / 9,NASA / USGS,Gratis,Óptico + Térmico,OLI + TIRS,30 m (15 pan / 100 térmico),16 d (8 d combinados),185 km,Gratis,USGS EarthExplorer,2013 / 2021–
+MODIS,NASA (Terra / Aqua),Gratis,Óptico + Térmico,36 bandas,250 / 500 / 1000 m,Diaria,2330 km,Gratis,NASA Earthdata,1999 / 2002–
+VIIRS,NASA / NOAA,Gratis,Óptico + Térmico + Nocturno,Día-noche,375 / 750 m,Diaria,3060 km,Gratis,NASA Earthdata,2011–
+ASTER,NASA / METI (Terra),Gratis,Óptico + Térmico + Estéreo,VNIR / SWIR / TIR,15 / 30 / 90 m,A demanda (~16 d),60 km,Gratis,NASA Earthdata,1999–
+SRTM,NASA,Gratis,DEM,Interferometría banda C,30 m (1 arcsec),Única (feb-2000),—,Gratis,EarthExplorer / OpenTopography,2000
+Copernicus DEM GLO-30,ESA (de TanDEM-X),Gratis,DEM,SAR banda X,30 m,Época ~2011–2015,—,Gratis,Copernicus / AWS,2019–
+NASADEM,NASA,Gratis,DEM,SRTM reprocesado,30 m,Época 2000,—,Gratis,NASA Earthdata,2020
+SAOCOM 1A / 1B,CONAE (Argentina),Gratis,SAR,Banda L (1.275 GHz),~10 m (stripmap),8–16 d,30–350 km,Gratis (registro CONAE),CONAE,2018 / 2020–
+ALOS-2 PALSAR-2,JAXA,Pago,SAR,Banda L,3–10 m,~14 d,50–70 km,Pago (ALOS-1 gratis vía ASF),JAXA / ASF,2014–
+SMAP,NASA,Gratis,Radiómetro,Banda L (humedad de suelo),9–36 km,2–3 d,1000 km,Gratis,NASA Earthdata,2015–
+GRACE-FO,NASA / GFZ,Gratis,Gravimetría,Agua subterránea / masa,~300 km,Mensual,Global,Gratis,NASA Earthdata / PO.DAAC,2018–
+PRISMA,ASI (Italia),Gratis,Hiperespectral,239 bandas VNIR-SWIR,30 m (5 m pan),A demanda,30 km,Gratis (registro ASI),ASI,2019–
+EMIT,NASA JPL (ISS),Gratis,Hiperespectral,Mineralogía / polvo,60 m,A demanda (deriva ISS),75 km,Gratis,NASA Earthdata,2022–
+GOES-16 / 18,NOAA,Gratis,Óptico + Térmico (GEO),ABI,0.5–2 km,5–15 min,Disco completo,Gratis,NOAA / AWS,2017–
+PlanetScope,Planet,Pago,Óptico,3–8 bandas,3–4 m,Diaria,~24 km,Pago (uso científico limitado),Planet,2016–
+SkySat,Planet,Pago,Óptico,Pan + multiespectral,0.5 m,Sub-diaria (tasking),6.6 km,Pago,Planet,2014–
+WorldView / Legion,Maxar,Pago,Óptico,Muy alta resolución,0.3 m,~Diaria (tasking),13 km,Pago,Maxar,2014–
+Pléiades / Neo,Airbus,Pago,Óptico,Pan + multiespectral,0.5 / 0.3 m,Diaria (tasking),20 / 14 km,Pago,Airbus,2011 / 2021–
+TerraSAR-X / PAZ,Airbus / Hisdesat,Pago,SAR,Banda X,1–3 m (0.25 staring),~11 d (tasking),5–30 km,Pago,Airbus,2007 / 2018–
+COSMO-SkyMed,ASI (Italia),Pago,SAR,Banda X,1 m,Tasking (constelación),10–40 km,Pago,e-GEOS,2007–
+ICEYE,ICEYE,Pago,SAR,Banda X (constelación),0.25–1 m,Sub-diaria (tasking),5–30 km,Pago,ICEYE,2018–
+Capella Space,Capella,Pago,SAR,Banda X,0.5 m,Tasking,5–10 km,Pago,Capella,2020–
+Umbra,Umbra,Pago,SAR,Banda X,0.25 m,Tasking,4–10 km,Pago (open data limitado),Umbra,2021–

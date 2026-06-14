@@ -1,0 +1,15 @@
+# Entorno para regenerar las animaciones/datos del sitio satelites-eo.
+#
+#   mamba env create -f docs/pipeline/environment.yml
+#   mamba activate satelites-eo
+#
+# Solo hace falta para regenerar el planisferio de cobertura y (opcional) refrescar
+# el snapshot TLE. El catálogo (build_catalogo.py) corre con la stdlib de Python.
+name: satelites-eo
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - plotly        # planisferio animado (scattergeo) → HTML autocontenido
+  - skyfield      # propagación de órbitas (SGP4) a partir de TLE
+  - numpy
