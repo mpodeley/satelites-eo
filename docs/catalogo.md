@@ -64,7 +64,7 @@ abiertos, ideales para empezar y para presupuestos chicos) y **comerciales** (se
     Casi todo análisis serio **empieza por lo gratuito** (Sentinel, Landsat, los DEM) para
     explorar y delimitar la zona. Lo comercial se reserva para cuando hace falta **detalle
     sub-métrico** o una **fecha concreta a pedido** que las misiones abiertas no cubren.
-    Los cinco [casos reales](casos.md) de esta guía se hicieron **100 % con datos gratuitos**.
+    Los seis [casos reales](casos.md) de esta guía se hicieron **100 % con datos gratuitos**.
 
 > Las tablas de arriba se generan desde `docs/data/satelites.csv` con
 > `python docs/pipeline/build_catalogo.py` — editá el CSV, no las tablas a mano.

@@ -1,6 +1,6 @@
-# Los cinco casos reales
+# Los seis casos reales
 
-Esta guía nació como suplemento de cinco estudios hechos **100 % con datos satelitales gratuitos**.
+Esta guía nació como suplemento de seis estudios hechos **100 % con datos satelitales gratuitos**.
 Cada uno ilustra una decisión distinta de las que vimos en [Cómo planificar](planificar.md): qué
 medir, qué sensor, qué banda, y —sobre todo— qué se puede y qué **no** se puede afirmar.
 
@@ -91,10 +91,34 @@ Muerta, y se puede **atribuir a cada operador** con datos públicos, sin informa
 
 🔗 **[vaca-muerta-emisiones →](https://mpodeley.github.io/vaca-muerta-emisiones/)**
 
+## 6. Screening de alteración hidrotermal por espectrometría (minería, San Juan)
+
+**Pregunta:** ¿se puede **acotar blancos de exploración minera** mapeando la **alteración hidrotermal**
+del cinturón **El Indio–Pascua** (San Juan) con espectrometría satelital, y hasta dónde llega ese
+*screening*?
+
+- **Sensores / misiones — tres, uno por nivel de pregunta:** **ASTER** (VNIR-SWIR-TIR, gratis) para
+  **barrer** la alteración (argílica / fílica / propilítica / sílice / Fe-óxido); **EMIT** hiperespectral
+  (285 bandas, en la ISS) para **discriminar** los minerales del *lithocap*; **Sentinel-2** para el
+  contexto actual. Todos gratis.
+- **Técnica:** cocientes de bandas ASTER + realce **Crosta (PCA)** + clasificación **SAM**, sobre una
+  escena pre-2008 (el SWIR de ASTER murió en abril de 2008), procesado en Google Earth Engine; validación
+  contra depósitos conocidos.
+- **Resultado:** con una escena ASTER gratis de 2002, la alteración mapeada **reencuentra** Veladero,
+  Lama (Pascua-Lama) y Del Carmen (*recall* 3/4; Veladero a **40 m** de la huella). EMIT aporta un
+  **espectro real** sobre Veladero con la absorción Al-OH a 2,2 µm. Pero la huella de alteración cubre
+  **428 km²** → ~**143 km² por cada depósito conocido**: alteración ≫ mena.
+- **Lección:** la espectrometría **no encuentra la mena, encuentra la huella de alteración** — *acota* la
+  búsqueda, no la confirma. El caso elige la **resolución de la pregunta**: ASTER para barrer,
+  hiperespectral para discriminar (la **alunita** que ASTER mezcla con caolinita), terreno para confirmar.
+  Y es ciega a lo que está **oculto bajo cobertura**.
+
+🔗 **[sanjuan-espectrometria →](https://mpodeley.github.io/sanjuan-espectrometria/)**
+
 ---
 
 !!! note "El hilo común"
-    Los cinco parten de la misma pregunta —**¿qué quiero medir?**— y de ahí derivan sensor, banda y
-    técnica. Y los cinco son **honestos con el límite del método**: a veces el resultado más valioso
+    Los seis parten de la misma pregunta —**¿qué quiero medir?**— y de ahí derivan sensor, banda y
+    técnica. Y los seis son **honestos con el límite del método**: a veces el resultado más valioso
     es entender *por qué* un dato gratuito no alcanza, cuál sería la palanca correcta, o qué tan lejos
     se puede confiar en lo que el satélite sí ve.

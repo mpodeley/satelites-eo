@@ -4,8 +4,8 @@ Hay **decenas de satélites** mirando la Tierra ahora mismo. Algunos sacan fotos
 "ven" en la oscuridad o a través de las nubes con radar, otros miden la altura del terreno, la
 temperatura, la humedad del suelo o hasta cambios en la gravedad. Muchos son **gratis**.
 
-Esta guía es un **suplemento didáctico** a cinco estudios reales hechos solo con datos satelitales
-públicos (ver [Los cinco casos](casos.md)). Acá no analizamos un lugar puntual: explicamos
+Esta guía es un **suplemento didáctico** a seis estudios reales hechos solo con datos satelitales
+públicos (ver [Los seis casos](casos.md)). Acá no analizamos un lugar puntual: explicamos
 **qué herramientas hay, dónde están, qué dato sacan, cada cuánto y a qué costo**, para que puedas
 **planificar tu propia campaña o estudio**.
 
@@ -41,7 +41,7 @@ las luces de ciudades y del flaring de gas—.*
    acceso. Tu lista de compras.
 5. **[Cómo elegir / planificar](planificar.md)** — un árbol de decisión: *tengo esta pregunta,
    ¿qué satélite uso?*
-6. **[Los cinco casos](casos.md)** — de la teoría a la práctica, con resultados reales.
+6. **[Los seis casos](casos.md)** — de la teoría a la práctica, con resultados reales.
 
 !!! note "Honestidad metodológica"
     Esta guía es introductoria y prioriza la **intuición** sobre la exactitud de cada número.

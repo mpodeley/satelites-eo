@@ -115,6 +115,33 @@ El calor de las antorchas de gas, visible de noche — la otra cara del caso
   India.* Nature 460, 999–1002. [10.1038/nature08238](https://doi.org/10.1038/nature08238)
   *Qué extrae:* estima el **agotamiento de acuíferos** con anomalías gravimétricas de **GRACE**.
 
+## 7. Espectrometría de alteración hidrotermal (exploración minera)
+
+Mapear los **minerales de alteración** (arcillas, alunita, sílice, óxidos de hierro) que deja un sistema
+hidrotermal para **acotar blancos de exploración** — la base del caso
+[San Juan / espectrometría](casos.md):
+
+- **Mars et al. · 2019.** *Porphyry Copper Potential of the United States Southern Basin and Range Using
+  ASTER Data Integrated with Geochemical and Geologic Datasets.* Economic Geology 114(6), 1095–1121.
+  [10.5382/econgeo.4675](https://doi.org/10.5382/econgeo.4675)
+  *Qué extrae:* **screening regional** de pórfidos de cobre — polígonos de alteración argílica / fílica /
+  propilítica de **ASTER** integrados con geoquímica y geofísica → depósitos no descubiertos.
+- **Wan, Fan, Jin · 2021.** *Application of hyperspectral remote sensing for supplementary investigation
+  of polymetallic deposits in Huaniushan ore region, NW China.* Scientific Reports 11, 440.
+  [10.1038/s41598-020-79864-0](https://doi.org/10.1038/s41598-020-79864-0)
+  *Qué extrae:* mapeo **hiperespectral** de minerales de alteración con **SAM, MNF, PCA y MTMF**; ~80 %
+  de exactitud validada a campo.
+- **Yousefi et al. · 2018.** *Integrating geologic and Landsat-8 and ASTER remote sensing data for gold
+  exploration: Zarshuran Carlin-type gold deposit, NW Iran.* Arabian Journal of Geosciences 11, 482.
+  [10.1007/s12517-018-3822-x](https://doi.org/10.1007/s12517-018-3822-x)
+  *Qué extrae:* halos de alteración (argílica, alunita, sílice, óxidos) con **cocientes de bandas, PCA,
+  Crosta, SAM y Matched Filtering** + lineamientos.
+- **Chirinos · 2026.** *Teledetección de depósitos minerales ocultos mediante imágenes multiespectrales
+  ASTER. Una revisión.* Revista de Teledetección 68, e24590.
+  [10.4995/raet.2026.24590](https://doi.org/10.4995/raet.2026.24590)
+  *Qué extrae (revisión, en español):* el alcance y los **límites** de ASTER para depósitos **ocultos** —
+  técnicas, índices e integración multifuente.
+
 !!! note "Sobre las citas"
     Lista no exhaustiva y curada; cada referencia se verificó contra su DOI. Las métricas y enlaces
     pueden cambiar: ante la duda, buscá el DOI. ¿Falta un trabajo que valga la pena? Se agradece el
